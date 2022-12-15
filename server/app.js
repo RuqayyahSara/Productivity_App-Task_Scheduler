@@ -34,7 +34,7 @@ app.use("/api/admin/user", adminUserRouter)
  app.get("/*", (req, res) => {
    res.sendFile(path.join(__dirname, "build", "index.html"));
  });
-app.listen(port, () => {
+app.listen(port , () => {
   console.log(`Server Started AT ${port}`);
   console.log(`Deployed at : ${config.get("URL")}`)
 });
