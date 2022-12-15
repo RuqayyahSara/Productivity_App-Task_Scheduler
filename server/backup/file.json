@@ -1,0 +1,78 @@
+{
+    "_id": {
+        "$oid": "6298606c291579939d8f1fdb"
+    },
+    "usertype": "user",
+    "plantype": "free",
+    "firstname": "Ruqayyah",
+    "lastname": "saraa",
+    "email": "sarasadiya4@gmail.com",
+    "password": "$2b$12$EPMxbmCBW68c3XO1U/apsuwEGQZDpGAAYiStaW4Jft0kJvn/fV6rC",
+    "phone": "+919989151967",
+    "userverified": {
+        "email": true,
+        "phone": true
+    },
+    "userverifytoken": {
+        "phone": "JWaukJFTx2DE7234",
+        "email": "kLzWcLip"
+    },
+    "passwordresettoken": null,
+    "wallet": 200,
+    "credits": {
+        "email": 150,
+        "sms": 50
+    },
+    "isSuspended": false,
+    "tasks": [
+        {
+            "task": "test44",
+            "deadline": {
+                "$date": {
+                    "$numberLong": "1654300800000"
+                }
+            },
+            "reminders": [
+                {
+                    "$date": {
+                        "$numberLong": "1654174210000"
+                    }
+                }
+            ],
+            "isCompleted": false,
+            "notificationType": "both",
+            "_id": {
+                "$oid": "6298646d291579939d8f1fe7"
+            }
+        }
+    ],
+    "complaints": [
+        {
+            "title": "test1",
+            "description": "Too many bugs",
+            "status": false,
+            "date": {
+                "$date": {
+                    "$numberLong": "1654184604342"
+                }
+            },
+            "_id": {
+                "$oid": "6298df3ab70622e3fc0520cb"
+            }
+        },
+        {
+            "title": "test2",
+            "description": "too many things",
+            "status": false,
+            "date": {
+                "$date": {
+                    "$numberLong": "1654184604342"
+                }
+            },
+            "_id": {
+                "$oid": "6298df55b70622e3fc0520ce"
+            }
+        }
+    ],
+    "__v": 3
+}

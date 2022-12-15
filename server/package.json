@@ -1,0 +1,45 @@
+{
+    "name": "tasky-app-server",
+    "version": "1.0.0",
+    "description": "Web Server - Tasky App",
+    "main": "app.js",
+    "scripts": {
+        "start": "NODE_ENV=production node app.js",
+        "dev": "nodemon app.js"
+    },
+    "engines": {
+        "node": "16.15.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/ip11/cs21_MAT7_ClassWork.git"
+    },
+    "keywords": [
+        "express",
+        "cli",
+        "web"
+    ],
+    "type": "module",
+    "author": "cs.code.in",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/ip11/cs21_MAT7_ClassWork/issues"
+    },
+    "homepage": "https://github.com/ip11/cs21_MAT7_ClassWork#readme",
+    "dependencies": {
+        "axios": "^0.27.2",
+        "bcrypt": "^5.0.1",
+        "config": "^3.3.8",
+        "crypto-js": "^4.1.1",
+        "express": "^4.18.1",
+        "express-validator": "^6.14.2",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^6.6.2",
+        "node-schedule": "^2.1.0",
+        "nodemailer": "^6.8.0",
+        "twilio": "^3.82.1"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.20"
+    }
+}
