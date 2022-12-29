@@ -1,8 +1,8 @@
 {
   "PORT": 5001,
-  "MS_URL": "http://192.168.0.155:5800",
-  "OTP_MS_URL": "http://192.168.0.155:5500",
-  "URL": "https://tasky.tech",
+  "MS_URL": "https://scheduler.compiler.today",
+  "OTP_MS_URL": "https://otp.compiler.today",
+  "URL": "https://tasky.compiler.today",
 
   "EMAIL_SMTP": {
     "HOST": "mail.csmafia.com",
