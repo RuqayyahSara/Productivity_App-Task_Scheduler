@@ -36,5 +36,5 @@ app.use("/api/admin/user", adminUserRouter)
  });
 app.listen(port , () => {
   console.log(`Server Started AT ${port}`);
-  console.log(`Deployed at : ${config.get("URL")}`)
+  console.log(`Yoo Deployed at : ${config.get("URL")}`)
 });
