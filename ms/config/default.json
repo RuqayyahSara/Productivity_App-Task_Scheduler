@@ -1,7 +1,7 @@
 {
-  "PORT": 5800,
-  "MAIN_URL": "http://192.168.0.155:5000",
-  "URL": "http://192.168.68.130:5800",
+  "PORT": 5300,
+  "MAIN_URL": "https://tasky.compiler.today",
+  "URL": "https://scheduler.compiler.today",
   "EMAIL_SMTP": {
     "HOST": "mail.csmafia.com",
     "AUTH": {

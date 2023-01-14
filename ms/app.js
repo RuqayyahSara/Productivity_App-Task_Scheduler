@@ -15,6 +15,9 @@ import {
 const port = process.env.PORT || config.get("PORT");
 app.use(express.json());
 
+app.get("/", (req,res)=>{
+res.send("Scheduler Microservice at work!")
+})
 
 
 app.post("/newjob", async (req, res) => {
