@@ -1,0 +1,22 @@
+{
+  "PORT": 5800,
+  "MAIN_URL": "http://192.168.0.155:5000",
+  "URL": "http://192.168.68.130:5800",
+  "EMAIL_SMTP": {
+    "HOST": "mail.csmafia.com",
+    "AUTH": {
+      "USER": "adnan@csmafia.com",
+      "PASS": "y5(^6<_m*h[XFG<w"
+    },
+    "PORT": 465
+  },
+  "SEND_SMS": {
+    "TWILIO_SID": "ACc99c8b400751ad3fb28d729f4b3e7465",
+    "TWILIO_TOKEN": "da8ce49611bb528b60af169c4ac70030",
+    "TWILIO_NUMBER": "+16066127657"
+  },
+  "SECRET_KEYS_MS": {
+    "JWT_TOKEN": "MICROSERVICE@123",
+    "CRYPTO_TOKEN": "API@MICROSERVICE"
+  }
+}

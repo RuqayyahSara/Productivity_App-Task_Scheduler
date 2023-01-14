@@ -182,6 +182,21 @@ router.post(
 
       // Generate OTP
       let otp = Math.floor(Math.random() * 899999) + 100000
+      //Trigger Email Verification
+      sendEmail({
+        subject: "OTP Login - Tasky Solutions M7",
+        to: userData.email,
+        body: `Hi<br/>
+        Your OTP for Login verification - ${otp} <br/><br/>
+            Thank you <br/>
+            <b>Team Tasky M7 Solutions.</b>`,
+      });
+
+      //Trigger SMS Verification
+      sendSMS({
+        body: `Hi, Your OTP for Login verification - ${otp}`,
+        phone: userData.phone,
+      });
       let data = await axios.post(`${config.get("OTP_MS_URL")}/create`, { email: userData.email, otp: otp, phone: userData.phone, status: userData.status });
       console.log(data.data)
       // Generate OTP Access Token
@@ -281,6 +296,20 @@ router.get(
       }
       // Generate OTP
       let otp = Math.floor(Math.random() * 899999) + 100000
+      sendEmail({
+        subject: "OTP Login - Tasky Solutions M7",
+        to: userData.email,
+        body: `Hi<br/>
+        Your OTP for Login verification - ${otp} <br/><br/>
+            Thank you <br/>
+            <b>Team Tasky M7 Solutions.</b>`,
+      });
+
+      //Trigger SMS Verification
+      sendSMS({
+        body: `Hi, Your OTP for Login verification - ${otp}`,
+        phone: userData.phone,
+      });
       let data = await axios.post(`${config.get("OTP_MS_URL")}/create`, { email: userData.email, otp: otp, phone: userData.phone, status: userData.userstatus });
       console.log(data.data)
       // Generate OTP Access Token

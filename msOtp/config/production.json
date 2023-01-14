@@ -1,0 +1,20 @@
+{
+    "PORT": 5500,
+    "EMAIL_SMTP": {
+        "HOST": "cpl12.main-hosting.eu",
+        "AUTH": {
+            "USER": "suhail@suhail.link",
+            "PASS": "Suhail.link20@"
+        },
+        "PORT": 465
+    },
+    "SEND_SMS": {
+        "TWILIO_SID": "ACba4b4064e865776e25f19f155b2b543b",
+        "TWILIO_TOKEN": "c423bfd33a92cbc68ae56c0c6066f80e",
+        "TWILIO_NUMBER": "+19289166338"
+    },
+    "SECRET_KEYS": {
+        "JWT": "CS.CODE.IN",
+        "CRYPTO": "CS21.CODE.IN"
+    }
+}
