@@ -1,5 +1,5 @@
 import config from "config";
-import express from "express";
+import express from "express"
 import path from "path";
 import { fileURLToPath } from "url"
 
