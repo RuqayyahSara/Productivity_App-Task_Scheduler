@@ -30,8 +30,8 @@ function MemberState(props) {
             removeLoading()
         } catch (err) {
             removeLoading()
-            localStorage.removeItem("token")
-            window.location.href= "/login"
+        //    localStorage.removeItem("token")
+          //  window.location.href= "/login"
             console.log(err.response.data)
         }
     }
