@@ -81,11 +81,11 @@ const memberSchema = new mongoose.Schema({
     userverifytoken: {
         email: {
             type: String,
-            required: true
+            // required: true
         },
         phone: {
             type: String,
-            required: true
+            // required: true
         }
     },
     passwordresettoken: {

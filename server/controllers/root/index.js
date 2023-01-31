@@ -154,10 +154,12 @@ router.post(
 
       if (!userData) {
         userData = await Users.findOne({ email });
-        if (!userData)
+        
+        if (!userData) {
           userData = await Members.findOne({ email });
-        if (!userData)
-          return res.status(404).json({ error: "Invalid Credentials" });
+          if (!userData)
+            return res.status(404).json({ error: "Invalid Credentials" });
+        }
       }
 
       const passValid = await bcrypt.compare(password, userData.password);
@@ -202,7 +204,7 @@ router.post(
       // Generate OTP Access Token
       let token = jwt.sign({ email: userData.email, _id: userData._id, otp: otp }, JWT, { expiresIn: "5m" });
       token = cryptoJS.AES.encrypt(token, CRYPTO).toString()
-      res.status(200).json({ token })
+      res.status(200).json({ token, email })
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -267,6 +269,7 @@ router.post("/verify/otp", verifyOTPToken, OTPValidatorRules(), errorMiddleware,
     await userData.save();
     res.status(200).json({ token: data.token, role: userData.usertype });
   } catch (error) {
+    console.log(error.response.data.error)
     res.status(500).json({ error: error.response.data.error });
   }
 });
@@ -279,11 +282,11 @@ router.post("/verify/otp", verifyOTPToken, OTPValidatorRules(), errorMiddleware,
     Validations:
     Description: Resend OTP Mobile
 */
-router.get(
-  "/resend/otp", verifyOTPToken,
+router.post(
+  "/resend/otp",
   async (req, res) => {
     try {
-      let { email } = req.payloadOTP;
+      let { email } = req.body;
 
       let userData = await Admin.findOne({ email });
 
@@ -294,6 +297,11 @@ router.get(
         if (!userData)
           return res.status(401).json({ error: "Unauthorised Access" });
       }
+
+
+      if (userData.userstatus == "suspended")
+        return res.status(401).json({ error: "Account Inactive. Try Again Later" });
+
       // Generate OTP
       let otp = Math.floor(Math.random() * 899999) + 100000
       sendEmail({
@@ -315,7 +323,7 @@ router.get(
       // Generate OTP Access Token
       let token = jwt.sign({ email: userData.email, _id: userData._id, otp: otp }, JWT, { expiresIn: "5m" });
       token = cryptoJS.AES.encrypt(token, CRYPTO).toString()
-      res.status(200).json({ token })
+      res.status(200).json({ token, email })
     } catch (error) {
       res.status(500).json({ error: error.response.data.error });
     }
@@ -448,7 +456,7 @@ router.get("/invite/verify/:token", async (req, res) => {
       subject: "User Account Verification - Tasky Solutions",
       to: userData.email,
       body: `Hi ${userData.firstname} ${userData.lastname} <br/>
-            Thank you for Signing Up. Please <a href='${config.get("URL")}/email/verify/${tokenEmail}'>Click Here </a>
+            Thank you for Signing Up. Please <a href='${config.get("URL")}/api/email/verify/${tokenEmail}'>Click Here </a>
             to verify your Email Address. <br/><br/>
             Thank you <br/>
             <b>Team Tasky Solutions.</b>`,
@@ -456,7 +464,7 @@ router.get("/invite/verify/:token", async (req, res) => {
 
     //Trigger SMS Verification
     sendSMS({
-      body: `Hi ${userData.firstname}, Please click the given link to verify your phone ${config.get("URL")}/phone/verify/${tokenPhone}`,
+      body: `Hi ${userData.firstname}, Please click the given link to verify your phone ${config.get("URL")}/api/phone/verify/${tokenPhone}`,
       phone: userData.phone,
     });
   } catch (error) {
@@ -525,7 +533,7 @@ router.post(
         subject: "User Account Verification - Tasky Solutions M7",
         to: email,
         body: `Hi <br/>
-            Please <a href='${config.get("URL")}/email/verify/${tokenEmail}'>Click Here </a>
+            Please <a href='${config.get("URL")}/api/email/verify/${tokenEmail}'>Click Here </a>
             to verify your Email Address. <br/><br/>
             Thank you <br/>
             <b>Team Tasky M7 Solutions.</b>`,
@@ -594,7 +602,7 @@ router.post(
 
       //Trigger Phone Verification
       sendSMS({
-        body: `Please click the given link to verify your phone ${config.get("URL")}/phone/verify/${tokenPhone}`,
+        body: `Please click the given link to verify your phone ${config.get("URL")}/api/phone/verify/${tokenPhone}`,
         phone: userData.phone,
       });
     } catch (error) {

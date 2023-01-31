@@ -31,9 +31,9 @@ app.use("/api/admin", adminRouter)
 app.use("/api/admin/team", adminTeamRouter)
 app.use("/api/admin/user", adminUserRouter)
 
- app.get("/*", (req, res) => {
-   res.sendFile(path.join(__dirname, "build", "index.html"));
- });
+//  app.get("/*", (req, res) => {
+//    res.sendFile(path.join(__dirname, "build", "index.html"));
+//  });
 app.listen(port , () => {
   console.log(`Server Started AT ${port}`);
   console.log(`Yoo Deployed at : ${config.get("URL")}`)

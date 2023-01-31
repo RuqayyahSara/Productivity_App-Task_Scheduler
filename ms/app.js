@@ -122,7 +122,7 @@ app.post("/activate", async (req, res) => {
         else
             status = "active"
 
-        scheduleJob(id, new Date(+new Date() + 1 * 60 * 1000), async () => {
+        scheduleJob(id, new Date(+new Date() + 15 * 60 * 1000), async () => {
             const { data } = await axios.delete(`${config.get("MAIN_URL")}/api/admin/team/teamadmin/suspend/${id}`,
                 { headers: { "x-auth-token": token }, data: { userstatus: status } })
             console.log(data)

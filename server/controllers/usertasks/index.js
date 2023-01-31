@@ -51,9 +51,7 @@ router.post(
             //Destructuring The Data from req.body
             let { task, deadline, reminders, notificationType } = req.body;
 
-
-
-            //Sorting Reminders Array in Ascending Order
+	    //Sorting Reminders Array in Ascending Order
             reminders.sort(function (a, b) {
                 return new Date(a) - new Date(b);
             });

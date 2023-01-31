@@ -37,16 +37,27 @@ function Add() {
     });
 
     const onChangeHandler = (e) => {
-        setuserData({
+/*     
+if(e.target.name === 'deadline'){
+	setuserData({
+		...userData,
+		[e.target.name] :  new Date(+(e.target.value) - (330*60*1000))
+	})
+	}
+   */
+//     else{
+	setuserData({
             ...userData,
             [e.target.name]: e.target.value,
         });
-    };
+  //    }    
+};
 
     const submitHandler = async (e) => {
         e.preventDefault()
         try {
-            console.log(userData)
+userData.deadline = new Date(userData.deadline).toISOString()
+userData.reminders = userData.reminders.map(e => new Date(e).toISOString())
             let token = JSON.parse(localStorage.getItem("token"))
             setLoading()
             let { data } = await axios.post("/api/user/task", userData, { headers: { "x-auth-token": token.token } });
@@ -61,7 +72,7 @@ function Add() {
             }, 1000)
         } catch (err) {
             removeLoading()
-            let data, datas = {}
+    let data, datas = {}
             console.log(err.response.data)
             if (err.response.data.error) {
                 data = err.response.data.error

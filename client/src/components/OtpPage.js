@@ -39,6 +39,7 @@ function OtpPage() {
                 msg: 'OTP Verified Successfully. Redirecting...',
             });
 
+            localStorage.removeItem("tokeno")
             setTimeout(() => {
                 if (data.role === "user")
                     navigate("/user", { replace: true });
@@ -78,7 +79,9 @@ function OtpPage() {
     const resendOtp = async () => {
         try {
             let token = JSON.parse(localStorage.getItem("tokeno"));
-            let { data } = await axios.get("/api/resend/otp", {
+            let bodyData = { email: token.email }
+            // console.log(bodyData)
+            let { data } = await axios.post("/api/resend/otp", bodyData, {
                 headers: { "x-otp-token": token.token },
             });
             localStorage.setItem("tokeno", JSON.stringify(data))

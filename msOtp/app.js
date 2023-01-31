@@ -17,8 +17,8 @@ app.get("/", (req, res) => {
 app.post("/create", (req, res) => {
     try {
         const { email, otp, phone, status } = req.body
-        if (status == "suspended")
-            return res.status(401).json({ error: "Account Suspended. Try again later" })
+        // if (status == "suspended")
+        //     return res.status(401).json({ error: "Account Suspended. Try again later" })
 
         myCache.set(`${email}-${otp}`, { otp: otp, attempts: 4 })
         console.log(myCache.data)

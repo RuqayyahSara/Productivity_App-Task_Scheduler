@@ -36,7 +36,7 @@ function ReadOnly({ ele, index
             <CTableDataCell style={{ color: "black", cursor: "pointer" }}>
                 {ele.task}</CTableDataCell>
             <CTableDataCell>{ele.isCompleted ? "True" : "False"}</CTableDataCell>
-            <CTableDataCell>{new Date(ele.deadline).toDateString() + ', ' + new Date(ele.deadline).toLocaleTimeString()}</CTableDataCell>
+<CTableDataCell>{ new Date(ele.deadline).toDateString() +', '+new Date(ele.deadline).toLocaleTimeString()}</CTableDataCell>
             <CTableDataCell>{ele.reminders.map((e, i) => (
                 <span key={i}>{new Date(e).toDateString() + ', ' + new Date(e).toLocaleTimeString()}<br /></span>)
             )}</CTableDataCell>

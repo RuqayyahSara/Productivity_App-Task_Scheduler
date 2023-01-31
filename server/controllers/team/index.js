@@ -19,6 +19,7 @@ import {
 import Admin from "../../models/Admin/index.js";
 import Members from "../../models/TeamMember/index.js";
 import Users from "../../models/Users/index.js";
+import { CustomerProfilesEvaluationsPage } from "twilio/lib/rest/trusthub/v1/customerProfiles/customerProfilesEvaluations.js";
 /*
     API --> api/team/project
     Access --> Private
@@ -540,10 +541,12 @@ teamProjects.get("/project/:project_id/team/:team_id/member/invite/:user_id/:tok
             return res.status(200).json({ success: "Invitation has been accepted already." });
 
         member.projects_involved[projectFound].inviteAccepted = true;
+        
         if (member.userstatus == "pending") {
             member.userstatus = "active"
-            member.invite = true
         }
+        if (!member.invite)
+            member.invite = true
         await member.save();
         res.status(200).json({ success: "The Invitation has been accepted Successfully." });
 
@@ -584,9 +587,71 @@ teamProjects.post("/project/:project_id/team/:team_id/member", authMiddleware, a
         memberData = await Members.findOne({ email: req.body.email });
         if (!memberData) {
             let member = new Members(req.body);
-            var password = strongPassowordGenerator(8);
-            let hashPassword = await bcrypt.hash(password, 12);
-            member.password = hashPassword;
+
+            let userData = await Users.findOne({ email: req.body.email });
+            if (userData) {
+                member.fullname = userData.firstname + " " + userData.lastname
+                member.phone = userData.phone
+                member.password = userData.password
+                member.lastLogin = userData.lastLogin
+                member.userstatus = userData.userstatus
+                member.createdAt = userData.createdAt
+                member.userverified.email = userData.userverified.email
+                member.userverified.phone = userData.userverified.phone
+            }
+
+            else {
+                var password = strongPassowordGenerator(8);
+                let hashPassword = await bcrypt.hash(password, 12);
+                member.password = hashPassword;
+                // creating invite tokens
+                member.userverifytoken.phone = randomString(16);
+                member.userverifytoken.email = randomString(8);
+                // jwt expiration invite Tokens
+                const tokenEmail = jwt.sign({ emailToken: member.userverifytoken.email },
+                    "emailToken@cs", { expiresIn: "1h" }
+                );
+                const tokenPhone = jwt.sign({ phoneToken: member.userverifytoken.phone },
+                    "phoneToken@cs", { expiresIn: "1h" }
+                );
+                //Trigger Email Verification
+                sendEmail({
+                    subject: "User Account Verification - Tasky Solutions M7",
+                    to: req.body.email,
+                    body: `Hi ${req.body.fullname} <br/>
+            Thank you for Signing Up. Please <a href='${config.get(
+                        "URL"
+                    )}/api/email/verify/${tokenEmail}'>Click Here </a>
+            to verify your Email Address. <br/><br/>
+            Thank you <br/>
+            <b>Team Tasky M7 Solutions.</b>`,
+                });
+
+                //Trigger SMS Verification
+                sendSMS({
+                    body: `Hi ${req.body.fullname}, Please click the given link to verify your phone ${config.get("URL")}/api/phone/verify/${tokenPhone}`,
+                    phone: req.body.phone,
+                });
+
+                // Send credentials
+                sendEmail({
+                    subject: "Login Credentials of Your Account - Tasky Solutions ",
+                    to: req.body.email,
+                    body: `Hi ${req.body.fullname}  <br/>
+                      Thank you for Signing Up. Your Login Credentials are : <br/>
+                      email:${req.body.email} <br/>
+                      password:${password} <br/>
+
+                      Please use these Credentials to Login. <br/>
+                      make sure you verify your Email and Mobile before Logging in.
+
+                      <br/><br/>
+                      Thank you <br/>
+                      <b>Team Tasky Solutions.</b>`,
+                });
+
+            }
+
             let token = randomString(8)
             let projects_involved = {
                 admin_id: req.payload._id.toString(),
@@ -594,84 +659,40 @@ teamProjects.post("/project/:project_id/team/:team_id/member", authMiddleware, a
                 teams: { team_id: req.params.team_id.toString() },
                 inviteToken: token
             }
+            member.projects_involved = projects_involved;
             const inviteToken = jwt.sign({ token: token },
                 "projectToken@member", { expiresIn: "1h" }
-            );
-            member.projects_involved = projects_involved;
-            // creating invite tokens
-            member.userverifytoken.phone = randomString(16);
-            member.userverifytoken.email = randomString(8);
-            // jwt expiration invite Tokens
-            const tokenEmail = jwt.sign({ emailToken: member.userverifytoken.email },
-                "emailToken@cs", { expiresIn: "1h" }
-            );
-            const tokenPhone = jwt.sign({ phoneToken: member.userverifytoken.phone },
-                "phoneToken@cs", { expiresIn: "1h" }
             );
             member.save();
             // Adding members in team Project
             userFound.projects[projectIndex].teams[teamIndex].members.unshift({ member: member._id });
-            // Send credentials
-            sendEmail({
-                subject: "Login Credentials of Your Account - Tasky Solutions ",
-                to: req.body.email,
-                body: `Hi ${req.body.fullname}  <br/>
-              Thank you for Signing Up. Your Login Credentials are : <br/>
-              email:${req.body.email} <br/>
-              password:${password} <br/>
-
-              Please use these Credentials to Login and also make sure you verify your Email and Mobile before Logging in.
-
-              <br/><br/>
-              Thank you <br/>
-              <b>Team Tasky Solutions.</b>`,
-            });
-
-            //Trigger Email Verification
-            sendEmail({
-                subject: "User Account Verification - Tasky Solutions M7",
-                to: req.body.email,
-                body: `Hi ${req.body.fullname} <br/>
-            Thank you for Signing Up. Please <a href='${config.get(
-                    "URL"
-                )}/email/verify/${tokenEmail}'>Click Here </a>
-            to verify your Email Address. <br/><br/>
-            Thank you <br/>
-            <b>Team Tasky M7 Solutions.</b>`,
-            });
-
-            //Trigger SMS Verification
-            sendSMS({
-                body: `Hi ${req.body.fullname}, Please click the given link to verify your phone ${config.get("URL")}/phone/verify/${tokenPhone}`,
-                phone: req.body.phone,
-            });
 
             //Trigger Email Verification
             sendEmail({
                 subject: "User Collaborate Invitation - Tasky Solutions M7",
                 to: req.body.email,
-                body: `Hi ${req.body.fullname}<br/>
+                body: `Hi ${member.fullname}<br/>
             ${userFound.user.firstname} has invited you to collaborate on the ${userFound.projects[projectIndex].projectName} project. 
             You can accept or ignore this invitation. 
-            Please <a href='${config.get("URL")}/project/${req.params.project_id}/team/${req.params.team_id}/member/invite/${req.payload._id}/${inviteToken}/${member._id}'>Click Here </a>
+            Please <a href='${config.get("URL")}/api/project/${req.params.project_id}/team/${req.params.team_id}/member/invite/${req.payload._id}/${inviteToken}/${member._id}'>Click Here </a>
             to accept the invitation from your email address. <br/><br/>
             Thank you <br/>
             <b>Team Tasky M7 Solutions.</b>`,
             });
-
         }
         else {
             // check if project exists in member collection
             let projectFound = memberData.projects_involved.find((ele) => ele.project_id == req.params.project_id);
             if (projectFound) {
                 let teamsFound = projectFound.teams.find((ele) => ele == req.params.team_id);
+                // check if team exists in member collection
                 if (teamsFound)
                     return res.status(409).json({ error: "Member Already Added" });
 
                 // Add team
                 projectFound.teams.push({ team_id: req.params.team_id });
             } else {
-                // add prpject and team
+                // add project and team
                 let token = randomString(8)
                 memberData.projects_involved.push({
                     admin_id: req.payload._id.toString(),
@@ -690,7 +711,7 @@ teamProjects.post("/project/:project_id/team/:team_id/member", authMiddleware, a
                     body: `Hi ${memberData.fullname}<br/>
             ${userFound.user.firstname} has invited you to collaborate on the ${userFound.projects[projectIndex].projectName} project. 
             You can accept or ignore this invitation. 
-            Please <a href='${config.get("URL")}/project/${req.params.project_id}/team/${req.params.team_id}/member/invite/${req.payload._id}/${inviteToken}/${memberData._id}'>Click Here </a>
+            Please <a href='${config.get("URL")}/api/project/${req.params.project_id}/team/${req.params.team_id}/member/invite/${req.payload._id}/${inviteToken}/${memberData._id}'>Click Here </a>
             to accept the invitation from your email address. <br/><br/>
             Thank you <br/>
             <b>Team Tasky M7 Solutions.</b>`,
