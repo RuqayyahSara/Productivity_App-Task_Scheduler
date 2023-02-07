@@ -1,8 +1,8 @@
 {
-  "PORT": 5001,
+  "PORT": 8002,
   "MS_URL": "https://scheduler.compiler.today",
   "OTP_MS_URL": "https://otp.compiler.today",
-  "URL": "https://tasky.compiler.today",
+  "URL": "https://tasky.csprojects.live",
   "EMAIL_SMTP": {
     "HOST": "mail.csmafia.com",
     "AUTH": {
@@ -12,9 +12,9 @@
     "PORT": 465
   },
   "SEND_SMS": {
-    "TWILIO_SID": "ACc99c8b400751ad3fb28d729f4b3e7465",
-    "TWILIO_TOKEN": "da8ce49611bb528b60af169c4ac70030",
-    "TWILIO_NUMBER": "+16066127657"
+    "TWILIO_SID": "ACba4b4064e865776e25f19f155b2b543b",
+    "TWILIO_TOKEN": "c423bfd33a92cbc68ae56c0c6066f80e",
+    "TWILIO_NUMBER": "+14132169012"
   },
   "SECRET_KEYS": {
     "JWT": "CS.CODE.IN",
