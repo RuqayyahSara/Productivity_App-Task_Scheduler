@@ -20,7 +20,7 @@ function EditTask() {
 
     const utilsContext = useContext(UtilsContext);
     const todoContext = useContext(TodoContext)
-    const { alert, showAlert, setLoading, loading, removeLoading, errorData, setErrorData, edit, setEdit } = utilsContext;
+    const { alert, showAlert, setLoad, load, removeLoad, errorData, setErrorData, edit, setEdit } = utilsContext;
     const { getTasks, task, setTask, getTask } = todoContext
 
     const [validated, setValidated] = useState(false);
@@ -57,12 +57,13 @@ function EditTask() {
     const submitHandler = async (e) => {
         try {
             e.preventDefault();
-            console.log(userData)
-            setLoading();
+            userData.isCompleted === 'true' ? userData.isCompleted = true : userData.isCompleted = false
+            // console.log(userData)
+            setLoad();
             let token = JSON.parse(localStorage.getItem("token"));
             let { data } = await axios.put(`/api/user/task/${edit}`, userData, { headers: { "x-auth-token": token.token } });
 
-            removeLoading();
+            removeLoad();
             showAlert({
                 type: "success",
                 msg: data.success
@@ -73,8 +74,9 @@ function EditTask() {
                 getTasks()
             }, 1000)
         } catch (err) {
-            removeLoading();
+            removeLoad();
             let datas = {};
+            console.log(err.response.data)
             if (err.response.data.error) {
                 showAlert({
                     type: "danger",
@@ -231,7 +233,7 @@ function EditTask() {
                                                 setTask(null)
                                             }}> Close </CButton>
                                             <CButton color="primary" type='submit'>
-                                                {loading && (
+                                                {load && (
                                                     <img src={spinner} alt="spinner" width={25} />
                                                 )}
                                                 Update</CButton>

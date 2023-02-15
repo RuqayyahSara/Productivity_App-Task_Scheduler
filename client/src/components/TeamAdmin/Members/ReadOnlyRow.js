@@ -29,17 +29,17 @@ function ReadOnly({ ele, index, project_id, team_id }) {
     }
   }
 
-  let resendInvite = async (e)=>{
-    try{
-     let id = e.target.id
-     let token = JSON.parse(localStorage.getItem("token"));
-     let {data} = await axios.post(`/api/team/project/${project_id}/team/${team_id}/member/${id}/resend/invite/email`, { headers: { "x-auth-token": token.token }})
-     setVisible(data.success)
-     console.log(data)
-    }catch(err){
-      console.log(err.response.data)
-    }
-      }
+  // let resendInvite = async (e)=>{
+  //   try{
+  //    let id = e.target.id
+  //    let token = JSON.parse(localStorage.getItem("token"));
+  //    let {data} = await axios.post(`/api/team/project/${project_id}/team/${team_id}/member/${id}/resend/invite/email`, { headers: { "x-auth-token": token.token }})
+  //    setVisible(data.success)
+  //    console.log(data)
+  //   }catch(err){
+  //     console.log(err.response.data)
+  //   }
+  //     }
 
   return (
     <CTableRow>

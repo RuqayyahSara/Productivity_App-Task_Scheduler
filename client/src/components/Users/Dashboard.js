@@ -52,8 +52,8 @@ function Dashboard() {
                             <CButton
                                 style={{
                                     color: "white",
-                                    backgroundColor: "#2EB95D",
-                                    border: "2px solid #2EB95D",
+                                    backgroundColor: "#fc5a8d",
+                                    border: "2px solid #fc5a8d",
                                     margin: "2px",
                                     cursor: "pointer",
                                     boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.2)",
@@ -65,8 +65,8 @@ function Dashboard() {
                                 <CButton
                                     style={{
                                         color: "white",
-                                        backgroundColor: "#e3256b",
-                                        border: "2px solid #e3256b",
+                                        backgroundColor: "#9370db",
+                                        border: "2px solid #9370db",
                                         margin: "2px",
                                         cursor: "pointer",
                                         boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.2)",
@@ -77,8 +77,7 @@ function Dashboard() {
                             <AddTask />
                         </h1>
                         <center>
-                            {loading && <Loading />}
-                            {tasks.length ? (
+                            {loading ? <Loading /> :  tasks.length ? (
                                 <CTable>
                                     <CTableHead>
                                         <CTableRow color="dark">
@@ -108,7 +107,7 @@ function Dashboard() {
                                         ))}
                                     </CTableBody>
                                 </CTable>
-                            ) : <></>}
+                            ): <h1>Nothing To display</h1>}
                         </center>
                     </CCol>
                 </CRow>

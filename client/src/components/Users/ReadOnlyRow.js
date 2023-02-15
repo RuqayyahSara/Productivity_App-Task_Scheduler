@@ -31,33 +31,42 @@ function ReadOnly({ ele, index
     }
 
     return (
-        <CTableRow style={{ backgroundColor: ele.isCompleted ? "#ace1af " : "#ff9999" }}>
+        <CTableRow style={{ backgroundColor: ele.isCompleted ? "#ace1af " : "#dcdcdc" }}>
             <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
             <CTableDataCell style={{ color: "black", cursor: "pointer" }}>
                 {ele.task}</CTableDataCell>
             <CTableDataCell>{ele.isCompleted ? "True" : "False"}</CTableDataCell>
-<CTableDataCell>{ new Date(ele.deadline).toDateString() +', '+new Date(ele.deadline).toLocaleTimeString()}</CTableDataCell>
+            <CTableDataCell>{new Date(ele.deadline).toLocaleString()}</CTableDataCell>
             <CTableDataCell>{ele.reminders.map((e, i) => (
-                <span key={i}>{new Date(e).toDateString() + ', ' + new Date(e).toLocaleTimeString()}<br /></span>)
+                <span key={i}>{new Date(e).toLocaleString()}<br /></span>)
             )}</CTableDataCell>
             <CTableDataCell>{ele.notificationType}</CTableDataCell>
             <CTableDataCell>
-                <CButton
+                {ele.isCompleted ? (<CButton disabled
                     style={{
                         color: "white",
-                        backgroundColor: "#273be2",
-                        border: "2px solid #273be2",
+                        backgroundColor: "#0066cc",
+                        border: "2px solid #0066cc",
+                        margin: "2px",
+                        boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.2)",
+                    }} onClick={() => setEdit(ele._id)}>
+                    Edit Task
+                </CButton>) : (<CButton
+                    style={{
+                        color: "white",
+                        backgroundColor: "#0066cc",
+                        border: "2px solid #0066cc",
                         margin: "2px",
                         cursor: "pointer",
                         boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.2)",
                     }} onClick={() => setEdit(ele._id)}>
                     Edit Task
-                </CButton>
+                </CButton>)}
                 <CButton
                     style={{
                         color: "white",
-                        backgroundColor: "#cb4154 ",
-                        border: "2px solid #cb4154  ",
+                        backgroundColor: "#e8000d",
+                        border: "2px solid #e8000d ",
                         margin: "2px",
                         cursor: "pointer",
                         boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.2)",

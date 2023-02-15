@@ -1,4 +1,4 @@
-import { SET_ALERT, REMOVE_ALERT, SET_LOADING, REMOVE_LOADING, SET_ERROR, SET_COUNTRIES, SET_EDIT, SET_VISIBLE} from "../types";
+import { SET_ALERT, REMOVE_ALERT, SET_LOADING, REMOVE_LOADING, SET_ERROR, SET_COUNTRIES, SET_EDIT, SET_VISIBLE, SET_LOAD, REMOVE_LOAD } from "../types";
 
 const UtilsReducer = (state, action) => {
     switch (action.type) {
@@ -22,6 +22,16 @@ const UtilsReducer = (state, action) => {
             return {
                 ...state,
                 loading: false,
+            };
+        case SET_LOAD:
+            return {
+                ...state,
+                load: true,
+            };
+        case REMOVE_LOAD:
+            return {
+                ...state,
+                load: false,
             };
         case SET_ERROR:
             return {

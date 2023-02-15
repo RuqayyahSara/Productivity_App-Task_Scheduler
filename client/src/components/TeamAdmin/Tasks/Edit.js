@@ -20,7 +20,7 @@ function EditTask({ project_id, team_id, member_id }) {
 
     const utilsContext = useContext(UtilsContext);
     const teamContext = useContext(TeamContext)
-    const { alert, showAlert, setLoading, loading, removeLoading, errorData, setErrorData, edit, setEdit } = utilsContext;
+    const { alert, showAlert, setLoad, load, removeLoad, errorData, setErrorData, edit, setEdit } = utilsContext;
     const { getTasks, task, setTask, getTask } = teamContext
 
     const [validated, setValidated] = useState(false);
@@ -57,12 +57,12 @@ function EditTask({ project_id, team_id, member_id }) {
     const submitHandler = async (e) => {
         try {
             e.preventDefault();
-            console.log(userData)
-            setLoading();
+            userData.isCompleted === 'true' ? userData.isCompleted = true : userData.isCompleted = false
+            setLoad();
             let token = JSON.parse(localStorage.getItem("token"));
             let { data } = await axios.put(`/api/team/project/${project_id}/team/${team_id}/member/${member_id}/task/${edit}`, userData, { headers: { "x-auth-token": token.token } });
 
-            removeLoading();
+            removeLoad();
             showAlert({
                 type: "success",
                 msg: data.success
@@ -73,7 +73,7 @@ function EditTask({ project_id, team_id, member_id }) {
                 getTasks(project_id, team_id, member_id)
             }, 1000)
         } catch (err) {
-            removeLoading();
+            removeLoad();
             let datas = {};
             if (err.response.data.error) {
                 showAlert({
@@ -231,7 +231,7 @@ function EditTask({ project_id, team_id, member_id }) {
                                                 setTask(null)
                                             }}> Close </CButton>
                                             <CButton color="primary" type='submit'>
-                                                {loading && (
+                                                {load && (
                                                     <img src={spinner} alt="spinner" width={25} />
                                                 )}
                                                 Update</CButton>

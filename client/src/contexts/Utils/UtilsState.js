@@ -2,12 +2,13 @@ import { useReducer } from "react";
 import UtilsContext from "./UtilsContext";
 import UtilsReducer from "./UtilsReducer";
 import axios from "axios";
-import { SET_ALERT, REMOVE_ALERT, SET_LOADING, REMOVE_LOADING, SET_ERROR, SET_COUNTRIES, SET_EDIT, SET_VISIBLE } from "../types.js";
+import { SET_ALERT, REMOVE_ALERT, SET_LOADING, REMOVE_LOADING, SET_ERROR, SET_COUNTRIES, SET_EDIT, SET_VISIBLE, SET_LOAD, REMOVE_LOAD } from "../types.js";
 
 function UtilsState(props) {
     const initialState = {
         alert: null,
         loading: false,
+        load: false,
         countries: [],
         errorData: {},
         edit: false,
@@ -21,6 +22,12 @@ function UtilsState(props) {
     };
     const removeLoading = () => {
         dispatch({ type: REMOVE_LOADING });
+    };
+    const setLoad = () => {
+        dispatch({ type: SET_LOAD });
+    };
+    const removeLoad = () => {
+        dispatch({ type: REMOVE_LOAD });
     };
 
     const setErrorData = (data) => {
@@ -64,10 +71,13 @@ function UtilsState(props) {
             errorData: state.errorData,
             edit: state.edit,
             visible: state.visible,
+            load : state.load,
             setErrorData,
             fetchFlags,
             setLoading,
             removeLoading,
+            setLoad,
+            removeLoad,
             showAlert,
             setEdit,
             setVisible

@@ -33,6 +33,8 @@ function Dashboard(id1, id2) {
   useEffect(() => {
     authUser('team')
     getMembers(project_id, team_id)
+    console.log(members)
+    console.log('hh')
     // eslint-disable-next-line
   }, [])
   return (
