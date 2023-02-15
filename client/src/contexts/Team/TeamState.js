@@ -125,7 +125,7 @@ function TeamState(props) {
         try {
             let token = JSON.parse(localStorage.getItem("token"));
             const { data } = await axios.get(`/api/team/project/${proj_id}/team/${team_id}/member/${member_id}`, { headers: { "x-auth-token": token.token } });
-            console.log(data.member)
+      //      console.log(data.member)
             setMember(data.member)
         } catch (error) {
             // console.log(error.response.data);

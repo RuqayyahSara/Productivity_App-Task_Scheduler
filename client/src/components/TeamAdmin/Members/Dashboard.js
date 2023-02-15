@@ -33,8 +33,8 @@ function Dashboard(id1, id2) {
   useEffect(() => {
     authUser('team')
     getMembers(project_id, team_id)
-    console.log(members)
-    console.log('hh')
+   // console.log(members)
+    //console.log('hh')
     // eslint-disable-next-line
   }, [])
   return (
@@ -79,7 +79,8 @@ function Dashboard(id1, id2) {
                 <CTableBody>
                   {members.length ? members.map((e, i) => (
                     <Fragment key={e.member._id}>
-                      {edit === e.member._id ?
+                     
+ {edit === e.member._id ?
                         (<EditMember project_id={project_id} team_id={team_id} />) : (
                           <ReadOnlyRow
                             key={e._id}
@@ -89,6 +90,7 @@ function Dashboard(id1, id2) {
                             team_id={team_id}
                           />
                         )}
+
                     </Fragment>
                   )) : <></>}
                 </CTableBody>

@@ -32,7 +32,7 @@ function MemberState(props) {
             removeLoading()
         //    localStorage.removeItem("token")
           //  window.location.href= "/login"
-            console.log(err.response.data)
+           // console.log(err.response.data)
         }
     }
 

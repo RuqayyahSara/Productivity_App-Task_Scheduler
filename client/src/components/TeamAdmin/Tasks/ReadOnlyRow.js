@@ -31,7 +31,7 @@ function ReadOnly({ ele, index, project_id, team_id, member_id
     }
 
     return (
-        <CTableRow>
+        <CTableRow style={{backgroundColor: ele.isCompleted ?  "#ace1af" : "#dcdcdc"}}>
             <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
             <CTableDataCell style={{ color: "black", cursor: "pointer" }}>
                 {ele.task}</CTableDataCell>
