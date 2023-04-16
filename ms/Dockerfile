@@ -1,4 +1,4 @@
-FROM node:19.4.0
+FROM node:19.9.0
 WORKDIR /ms
 COPY package.json /ms
 RUN npm install
